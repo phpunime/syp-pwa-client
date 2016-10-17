@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta charset="UTF-8">
+
+    <title>SYP</title>
+    <link rel="shortcut icon" href="images/launcher-icon-48.png"/>
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Carregando jQuery -->
+    <script src="bower_components/jquery/dist/jquery.min.js" type="application/javascript"></script>
+
+    <!-- Carregando Sweet Alert -->
+    <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css" type="text/css"/>
+    <script src="bower_components/sweetalert/dist/sweetalert.min.js" type="application/javascript"></script>
+
+    <!-- Carregando Bootstrap -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css"/>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js" type="application/javascript"></script>
+
+    <!-- Carregando Meu script e estilo -->
+    <link rel="stylesheet" href="css/style.css" type="text/css"/>
+    <script src="js/main.js" type="application/javascript"></script>
+
+</head>
+<body>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="/">
+                    SYP
+                </a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="pages/about.html">Sobre</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="location-status">
+        <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+    </div>
+
+    <button type="button" class="btn btn-default btn-lg" id="btn-camera">
+        <span class="glyphicon glyphicon-camera icon-refresh-animate" aria-hidden="true"></span>
+    </button>
+    <input class="hidden" type="file" id="take-picture" accept="image/*" />
+
+    <!-- Foto Modal -->
+    <div class="modal fade" id="picture-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Deseja enviar essa foto?</h4>
+                </div>
+                <div class="modal-body">
+                    <img id="picture-preview" width="100%"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

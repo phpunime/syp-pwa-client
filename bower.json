@@ -1,0 +1,24 @@
+{
+  "name": "syp-pwa-client",
+  "homepage": "https://github.com/phpunime/syp-pwa-client",
+  "authors": [
+    "João Maciel <j.maciel.hd@gmail.com>"
+  ],
+  "description": "pwa client for syp",
+  "main": "index.html",
+  "keywords": [
+    "share",
+    "pic",
+    "photo",
+    "picture"
+  ],
+  "license": "GPL",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
