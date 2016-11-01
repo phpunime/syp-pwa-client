@@ -10,7 +10,6 @@ var syp = {
     'init': function () {
         syp.verifyCompatibility();
         syp.getPosition();
-        syp.listaFotos();
 
         jQuery('#btn-camera').click(function (e) {
             syp.getPicture();
@@ -18,7 +17,9 @@ var syp = {
 
         jQuery('#take-picture').change(function (e) {
             syp.form = new FormData();
-            syp.form.append('fileUpload', event.target.files[0]);
+            syp.form.append('picture', event.target.files[0]);
+            syp.form.append('latitude', syp.currentPosition.latitude);
+            syp.form.append('longitude', syp.currentPosition.longitude);
             syp.showConfirmPicture(e.target.files);
         });
 
@@ -88,8 +89,8 @@ var syp = {
             'latitude': position.coords.latitude,
             'longitude': position.coords.longitude
         };
-        console.log(position);
         jQuery('#location-status span').attr('class', 'glyphicon glyphicon-pushpin');
+        syp.listaFotos();
     },
 
     'getPositionError': function () {
@@ -105,7 +106,7 @@ var syp = {
     'listaFotos': function () {
         jQuery.ajax({
             url: "/mok-server/fotos.php",
-            data: {'latitude': 1, 'longitude': 2},
+            data: {'latitude': currentPosition.latitude, 'longitude': currentPosition.longitude},
             dataType: "JSON",
             success: function (data) {
                 jQuery.each(data.fotos, function(index, value) {
