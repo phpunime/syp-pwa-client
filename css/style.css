@@ -34,3 +34,31 @@
     from { -moz-transform: rotate(0deg);}
     to { -moz-transform: rotate(360deg);}
 }
+
+body {
+    padding-top: 50px;
+}
+
+nav {
+    margin-bottom: 0 !important;
+}
+
+#list-fotos {
+    height: calc(100% - 52px);
+
+    /* Prevent vertical gaps */
+    line-height: 0;
+
+    -webkit-column-count: 2;
+    -webkit-column-gap:   2px;
+    -moz-column-count:    2;
+    -moz-column-gap:      2px;
+    column-count:         2;
+    column-gap:           2px;
+}
+
+#list-fotos img {
+    margin-bottom: 2px;
+    width: 100% !important;
+    height: auto !important;
+}
