@@ -4,11 +4,21 @@
  */
 var syp = {
 
+    'apiDomain': 'https://syp-api.localhost/',
     'currentPosition': null,
     'form': null,
 
     'init': function () {
-        syp.verifyCompatibility();
+
+        if(!syp.isOnline()) {
+            syp.showOfflinePage();
+            return;
+        }
+        if(!syp.hasGeolocation()) {
+            return;
+        }
+
+        //pega a posição atual
         syp.getPosition();
 
         jQuery('#btn-camera').click(function (e) {
@@ -17,15 +27,46 @@ var syp = {
 
         jQuery('#take-picture').change(function (e) {
             syp.form = new FormData();
-            syp.form.append('picture', event.target.files[0]);
             syp.form.append('latitude', syp.currentPosition.latitude);
             syp.form.append('longitude', syp.currentPosition.longitude);
             syp.showConfirmPicture(e.target.files);
+
         });
 
         jQuery('#confirm-send').click(function (e) {
-            syp.sendPicture();
+            var imgUrl = jQuery('#picture-preview').attr('src');
+            syp.toDataUrl(imgUrl, syp.sendPicture);
         });
+    },
+
+    'isOnline': function () {
+        return navigator.onLine;
+    },
+
+    'hasGeolocation': function () {
+        return navigator.geolocation;
+    },
+
+    'showOfflinePage': function () {
+        var html = '<div id="offline-page">'+
+                   'Você está offline, não conseguimos te mostrar as fotos tiradas na região :( <br>'+
+                   '<button class="btn btn-primary" onclick="location.reload();">Tente Novamente</button>'+
+                   '</div>';
+        jQuery('#page-container').html(html);
+    },
+
+    'toDataUrl': function (url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.responseType = 'blob';
+        xhr.onload = function() {
+            var reader = new FileReader();
+            reader.onloadend = function() {
+                callback(reader.result);
+            }
+            reader.readAsDataURL(xhr.response);
+        };
+        xhr.open('GET', url);
+        xhr.send();
     },
 
     'showConfirmPicture': function (files) {
@@ -42,25 +83,29 @@ var syp = {
             jQuery('#picture-preview').attr('src', imgURL);
 
             // Launch Modal
-            $('#picture-modal').modal();
+            jQuery('#picture-modal').modal();
 
             // Revoke ObjectURL
             // URL.revokeObjectURL(imgURL);
         }
     },
 
-    'sendPicture': function () {
+    'sendPicture': function (base64) {
 
-        $.ajax({
-            url: '/mok-server/fotos.php', // Url do lado server que vai receber o arquivo
+        console.log(base64);
+        syp.form.append('picture', base64);
+
+        jQuery.ajax({
+            url: syp.apiDomain + 'api/v1/photos', // Url do lado server que vai receber o arquivo
             data: syp.form,
             processData: false,
             contentType: false,
             type: 'POST',
             success: function (data) {
                 if(data.success === true) {
-                    $('#picture-modal').modal('hide');
+                    jQuery('#picture-modal').modal('hide');
                     swal('Foto enviada com sucesso', 'Parabéns sua foto foi publicada', 'success');
+                    syp.listaFotos();
                 }
             }
         });
@@ -68,20 +113,6 @@ var syp = {
 
     'getPicture': function () {
         jQuery('#take-picture').click();
-    },
-    
-    'startLoading': function () {
-        
-    },
-
-    'stopLoading': function () {
-
-    },
-
-    'verifyCompatibility': function () {
-        if(!navigator.geolocation) {
-            swal('Navegador incompativel', 'Seu navegador não permite localização', 'error');
-        }
     },
 
     'getPositionSuccess': function (position) {
@@ -105,12 +136,13 @@ var syp = {
     
     'listaFotos': function () {
         jQuery.ajax({
-            url: "/mok-server/fotos.php",
-            data: {'latitude': currentPosition.latitude, 'longitude': currentPosition.longitude},
+            url: syp.apiDomain + "api/v1/photos",
+            data: {'latitude': syp.currentPosition.latitude, 'longitude': syp.currentPosition.longitude},
             dataType: "JSON",
             success: function (data) {
+                jQuery('#list-fotos').html('');
                 jQuery.each(data.fotos, function(index, value) {
-                    jQuery('#list-fotos').append('<img src="' + value.url + '" />');
+                    jQuery('#list-fotos').append('<img src="' + syp.apiDomain + value.url + '" />');
                 });
             }
         });
@@ -119,5 +151,15 @@ var syp = {
 }
 
 window.onload = function() {
+    // Register the service worker if available.
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').then(function(reg) {
+            console.log('Successfully registered service worker', reg);
+        }).catch(function(err) {
+            console.warn('Error whilst registering service worker', err);
+        });
+    }
+
     syp.init();
+
 }

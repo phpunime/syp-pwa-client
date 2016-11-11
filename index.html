@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <meta charset="UTF-8">
 
-    <title>SYP</title>
+    <title>Share Your Pic</title>
     <link rel="shortcut icon" href="images/launcher-icon-48.png"/>
     <link rel="manifest" href="manifest.json">
 
@@ -38,7 +38,7 @@
                 </button>
 
                 <a class="navbar-brand" href="/">
-                    SYP
+                    Share Your Pic
                 </a>
             </div>
 
@@ -50,16 +50,20 @@
         </div>
     </nav>
 
-    <div id="list-fotos"></div>
+    <div id="page-container">
 
-    <div id="location-status">
-        <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+        <div id="list-fotos"></div>
+
+        <div id="location-status">
+            <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+        </div>
+
+        <button type="button" class="btn btn-default btn-lg" id="btn-camera">
+            <span class="glyphicon glyphicon-camera icon-refresh-animate" aria-hidden="true"></span>
+        </button>
+        <input class="hidden" type="file" id="take-picture" accept="image/*" />
+
     </div>
-
-    <button type="button" class="btn btn-default btn-lg" id="btn-camera">
-        <span class="glyphicon glyphicon-camera icon-refresh-animate" aria-hidden="true"></span>
-    </button>
-    <input class="hidden" type="file" id="take-picture" accept="image/*" />
 
     <!-- Foto Modal -->
     <div class="modal fade" id="picture-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

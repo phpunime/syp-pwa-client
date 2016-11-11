@@ -62,3 +62,8 @@ nav {
     width: 100% !important;
     height: auto !important;
 }
+
+#offline-page {
+    margin: auto;
+    padding: 15px;
+}
